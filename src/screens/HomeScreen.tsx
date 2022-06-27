@@ -11,7 +11,7 @@ import { PokemonCard } from '../components/PokemonCard';
 export const HomeScreen = () => {
     const { top } = useSafeAreaInsets();
     const { simplePokemonList, loadPokemon } = usePokemonPaginated();
-    console.log(simplePokemonList);
+    // console.log(simplePokemonList);
   return (
     <>
         <Image

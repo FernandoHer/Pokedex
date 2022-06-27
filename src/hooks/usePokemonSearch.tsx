@@ -1,21 +1,19 @@
 /* eslint-disable prettier/prettier *//* eslint-disable react-hooks/exhaustive-deps */
 
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { pokemonApi } from '../api/pokemonApi';
 import { PokemonPaginatedResponse, Result, SimplePokemon } from '../interfaces/pokemonInterfaces';
 
-export const usePokemonPaginated = () => {
+export const usePokemonSearch = () => {
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isFetching, setIsFetching] = useState(true);
     const [simplePokemonList, setSimplePokemonList] = useState<SimplePokemon[]>([]);
 
-    const nextPageUrl = useRef('https://pokeapi.co/api/v2/pokemon?limit=40');
+
 
     const loadPokemon = async() => {
-        setIsLoading(true);
-        const resp = await pokemonApi.get<PokemonPaginatedResponse>(nextPageUrl.current);
-        nextPageUrl.current = resp.data.next;
+        const resp = await pokemonApi.get<PokemonPaginatedResponse>('https://pokeapi.co/api/v2/pokemon?limit=1200');
         mapPakemonListToSimplePokemon(resp.data.results);
     };
 
@@ -31,8 +29,8 @@ export const usePokemonPaginated = () => {
                     picture,
                 };
             });
-            setSimplePokemonList([ ...simplePokemonList, ...newPokemonList]);
-            setIsLoading(false);
+            setSimplePokemonList([ ...newPokemonList ]);
+            setIsFetching(false);
     };
 
     useEffect(() => {
@@ -41,8 +39,8 @@ export const usePokemonPaginated = () => {
 
     return ({
         simplePokemonList,
-        isLoading,
-        loadPokemon,
+        isFetching,
+
     });
 
 };
